@@ -58,14 +58,17 @@ function logMessage(message, level = 'INFO') {
   fs.appendFile(logFilePath, logEntry, (err) => {
     if (err) console.error('Failed to write log:', err);
   });
-}
+};
 
 
 // insert app logs
 app.post('/adlg',(req,res)=>{
-  const {logMessage}  = req.body | [];
-  logMessage(logMessage);
-})
+  console.log(req);
+  const {log}  = req.body | [];
+  console.log(log);
+  
+  logMessage(log, "INFO");
+});
 
 
 app.listen(port, () => {
