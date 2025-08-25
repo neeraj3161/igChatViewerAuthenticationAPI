@@ -1,6 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 
+const fs = requiree('fs');
+
+const path = require('path');
+
+
+const logFilePath = path.join(__dirname, 'logs', 'app.log');
+
+
+
 
 const app = express();
 const port = 5000;
@@ -41,6 +50,23 @@ app.post('/authenticate', (req, res) => {
   }
 }
 );
+
+function logMessage(message, level = 'INFO') {
+  const timestamp = new Date().toISOString();
+  const logEntry = `[${timestamp}] [${level}] ${message}\n`;
+
+  fs.appendFile(logFilePath, logEntry, (err) => {
+    if (err) console.error('Failed to write log:', err);
+  });
+}
+
+
+// insert app logs
+app.post('/adlg',(req,res)=>{
+  const {logMessage}  = req.body | [];
+  logMessage(logMessage);
+})
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
