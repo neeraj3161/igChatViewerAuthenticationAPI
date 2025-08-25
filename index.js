@@ -66,6 +66,8 @@ app.post('/adlg',(req,res)=>{
   const {log}  = req.body | [];
   
   logMessage(log, "INFO");
+
+  res.sendStatus(200);
 });
 
 
