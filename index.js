@@ -9,7 +9,12 @@ const port = 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({origin: 'https://igchatviewerauthenticationapi.onrender.com/'}));
+app.use(cors({
+  origin: ["https://igchatviewer.web.app"], // your frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
