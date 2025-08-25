@@ -8,6 +8,8 @@ const path = require('path');
 
 const logFilePath = path.join(__dirname, 'logs', 'app.log');
 
+const logData = [];
+
 
 
 
@@ -55,9 +57,11 @@ function logMessage(message, level = 'INFO') {
   const timestamp = new Date().toISOString();
   const logEntry = `[${timestamp}] [${level}] ${message}\n`;
 
-  fs.appendFile(logFilePath, logEntry, (err) => {
-    if (err) console.error('Failed to write log:', err);
-  });
+  logData.push(logEntry);
+
+  // fs.appendFile(logFilePath, logEntry, (err) => {
+  //   if (err) console.error('Failed to write log:', err);
+  // });
 };
 
 
@@ -80,13 +84,15 @@ app.post('/adlg', (req, res) => {
 });
 
 app.get("/getLogs", (req, res) => {
-  fs.readFile(logFilePath, "utf-8", (err, data) => {
-    if (err) {
-      console.error("Failed to read log file:", err);
-      return res.status(500).send("Error reading logs");
-    }
-    res.send(data);
-  });
+
+  res.send(logData);
+  // fs.readFile(logFilePath, "utf-8", (err, data) => {
+  //   if (err) {
+  //     console.error("Failed to read log file:", err);
+  //     return res.status(500).send("Error reading logs");
+  //   }
+  //   res.send(data);
+  // });
 });
 
 
