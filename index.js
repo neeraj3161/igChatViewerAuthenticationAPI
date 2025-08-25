@@ -63,9 +63,7 @@ function logMessage(message, level = 'INFO') {
 
 // insert app logs
 app.post('/adlg',(req,res)=>{
-  console.log(req);
   const {log}  = req.body | [];
-  console.log(log);
   
   logMessage(log, "INFO");
 });
