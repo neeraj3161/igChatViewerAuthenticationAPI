@@ -79,6 +79,16 @@ app.post('/adlg', (req, res) => {
   res.sendStatus(200);
 });
 
+app.get("/getLogs", (req, res) => {
+  fs.readFile(logFilePath, "utf-8", (err, data) => {
+    if (err) {
+      console.error("Failed to read log file:", err);
+      return res.status(500).send("Error reading logs");
+    }
+    res.send(data);
+  });
+});
+
 
 
 app.listen(port, () => {
