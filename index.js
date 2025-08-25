@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-  origin: ["https://igchatviewer.web.app"], // your frontend
+  origin: ["https://igchatviewer.web.app","http://localhost:3000"], // your frontend
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
@@ -62,13 +62,23 @@ function logMessage(message, level = 'INFO') {
 
 
 // insert app logs
-app.post('/adlg',(req,res)=>{
-  const {log}  = req.body | [];
-  
-  logMessage(log, "INFO");
+app.post('/adlg', (req, res) => {
+  // Get client IP (works on local + behind proxies like Render/Heroku)
+  const ip =
+    req.headers['x-forwarded-for']?.split(',').shift() ||  // proxy header
+    req.socket?.remoteAddress;                             // fallback
+
+
+  if (!req.body.log) {
+    return res.status(400);
+  }
+
+  // Log with IP
+  logMessage(`IP: ${ip} | ${req.body.log || ""}`, "INFO");
 
   res.sendStatus(200);
 });
+
 
 
 app.listen(port, () => {
