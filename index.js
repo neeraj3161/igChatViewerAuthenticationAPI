@@ -57,6 +57,8 @@ function logMessage(message, level = 'INFO') {
   const timestamp = new Date().toISOString();
   const logEntry = `[${timestamp}] [${level}] ${message}\n`;
 
+  console.log(logEntry);
+
   logData.push(logEntry);
 
   // fs.appendFile(logFilePath, logEntry, (err) => {
