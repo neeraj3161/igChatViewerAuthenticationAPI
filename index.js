@@ -1,0 +1,42 @@
+const express = require('express');
+const cors = require('cors');
+
+
+const app = express();
+const port = 5000;
+
+// use below to parse json data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// app.use(cors({origin: 'http://localhost:3000'}));
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.post('/authenticate', (req, res) => {
+    let isAuthenticated = false;
+  // Simulate authentication logic
+    console.log(req.body);
+
+  const {chatStartDate} = req.body || {};
+  if (!chatStartDate) { 
+    return res.status(400).send('Chat start date is required!');
+  }
+  if(parseInt(chatStartDate) === 411)
+    isAuthenticated = true;
+
+  if (isAuthenticated) {
+    console.log('User authenticated successfully');
+    res.sendStatus(200);
+  } else {
+    console.log('User authentication failed');
+    res.sendStatus(401);
+  }
+}
+);
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
