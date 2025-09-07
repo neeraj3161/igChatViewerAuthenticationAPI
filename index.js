@@ -65,8 +65,7 @@ function logMessage(message, level = 'INFO') {
   // });
 };
 
-function sendLogToTelegram(message){
-  app.post('/send', async(req,res)=>{
+async function sendLogToTelegram(message){
     try {
       let response = await fetch(`https://api.telegram.org/bot${process.env.tele_auth}/sendMessage`, 
       {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id:process.env.chat_id, text:`${message ? message.toString() : ""}`})});
@@ -80,7 +79,6 @@ function sendLogToTelegram(message){
     } catch (error) {
       console.error(`Error occured while sending api data through bot: ${error}`)
     }
-})
 }
 
 
