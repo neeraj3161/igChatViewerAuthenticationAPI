@@ -5,6 +5,8 @@ const fs = require('fs');
 
 const path = require('path');
 
+require('dotenv').config();
+
 
 const logFilePath = path.join(__dirname, 'logs', 'app.log');
 
@@ -34,7 +36,6 @@ app.get('/', (req, res) => {
 app.post('/authenticate', (req, res) => {
     let isAuthenticated = false;
   // Simulate authentication logic
-    console.log(req.body);
 
   const {chatStartDate} = req.body || {};
   if (!chatStartDate) { 
@@ -44,10 +45,10 @@ app.post('/authenticate', (req, res) => {
     isAuthenticated = true;
 
   if (isAuthenticated) {
-    console.log('User authenticated successfully');
+    // console.log('User authenticated successfully');
     res.sendStatus(200);
   } else {
-    console.log('User authentication failed');
+    // console.log('User authentication failed');
     res.sendStatus(401);
   }
 }
@@ -57,14 +58,30 @@ function logMessage(message, level = 'INFO') {
   const timestamp = new Date().toISOString();
   const logEntry = `[${timestamp}] [${level}] ${message}\n`;
 
-  console.log(logEntry);
-
-  logData.push(logEntry);
+  sendLogToTelegram(message);
 
   // fs.appendFile(logFilePath, logEntry, (err) => {
   //   if (err) console.error('Failed to write log:', err);
   // });
 };
+
+function sendLogToTelegram(message){
+  app.post('/send', async(req,res)=>{
+    try {
+      let response = await fetch(`https://api.telegram.org/bot${process.env.tele_auth}/sendMessage`, 
+      {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id:process.env.chat_id, text:`${message ? message.toString() : ""}`})});
+
+      const data = await response.json();
+
+      console.log(data);
+
+      res.json({status:"ok"});
+
+    } catch (error) {
+      console.error(`Error occured while sending api data through bot: ${error}`)
+    }
+})
+}
 
 
 // insert app logs
