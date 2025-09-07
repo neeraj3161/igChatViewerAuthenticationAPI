@@ -67,6 +67,8 @@ function logMessage(message, level = 'INFO') {
 
 async function sendLogToTelegram(message){
     try {
+      console.log(process.env.tele_auth, process.env.chat_id);
+      
       let response = await fetch(`https://api.telegram.org/bot${process.env.tele_auth}/sendMessage`, 
       {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id:process.env.chat_id, text:`${message ? message.toString() : ""}`})});
 
