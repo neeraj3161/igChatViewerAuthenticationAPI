@@ -74,8 +74,6 @@ async function sendLogToTelegram(message){
 
       console.log(data);
 
-      res.json({status:"ok"});
-
     } catch (error) {
       console.error(`Error occured while sending api data through bot: ${error}`)
     }
