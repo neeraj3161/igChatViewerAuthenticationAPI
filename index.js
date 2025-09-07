@@ -67,10 +67,11 @@ function logMessage(message, level = 'INFO') {
 
 async function sendLogToTelegram(message){
     try {
-      console.log(process.env.tele_auth, process.env.chat_id);
+      const BOT_TOKEN = process.env.tele_auth?.trim();
+      const CHAT_ID = process.env.chat_id?.trim();
       
-      let response = await fetch(`https://api.telegram.org/bot${process.env.tele_auth}/sendMessage`, 
-      {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id:process.env.chat_id, text:`${message ? message.toString() : ""}`})});
+      let response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, 
+      {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id:CHAT_ID, text:`${message ? message.toString() : ""}`})});
 
       const data = await response.json();
 
